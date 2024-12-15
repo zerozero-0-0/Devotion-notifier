@@ -15,7 +15,6 @@ discord_channel_id = int(os.getenv("DISCORD_CHANNEL_ID"))
 # discord clientの設定
 intents = discord.Intents.default()
 client = discord.Client(intents=intents)
-channel = client.get_channel(discord_channel_id)
 
 # メッセージを送信したい時間を設定
 target_time_hour = 19
@@ -64,6 +63,10 @@ async def prevent_channel_closed(channel):
 
 @client.event
 async def on_ready():
+  channel = client.get_channel(discord_channel_id)
+  if channel is None:
+    print("指定されたチャンネルが見つかりません")
+    return
   
   while not client.is_closed():
     now = datetime.now(JST)
